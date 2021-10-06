@@ -29,13 +29,22 @@ contract ERC777SnapshotWrapper is ERC777 {
         backingToken = _backingToken;
     }
 
-    function deposit(address _recipient, uint256 _amount) external {
+    function depositFor(address _recipient, uint256 _amount) external {
         backingToken.safeTransferFrom(msg.sender, address(this), _amount);
         _mint(_recipient, _amount, "", "", false);
     }
 
-    function withdraw(address _recipient, uint256 _amount) external {
+    function mintTo(address _recipient, uint256 _amount) external {
+        require(
+            _amount + totalSupply() <= backingToken.balanceOf(address(this)),
+            "W37: Too large mint"
+        );
+        _mint(_recipient, _amount, "", "", false);
+    }
+
+    function withdrawTo(address _recipient, uint256 _amount) external {
         _burn(msg.sender, _amount, "", "");
+        backingToken.safeTransfer(_recipient, _amount);
     }
 
     function snapshot() public returns (uint256) {
