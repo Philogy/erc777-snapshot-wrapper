@@ -5,9 +5,11 @@ import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./lib/Snapshots.sol";
+import "./ISnapper.sol";
+import "./IEasyMinter.sol";
 
 /// @author Philippe Dumonet
-contract ERC777SnapshotWrapper is ERC777 {
+contract ERC777SnapshotWrapper is ERC777, ISnapper {
     using SafeERC20 for IERC20;
     using Snapshots for Snapshots.Uint256Snapshots;
 
@@ -47,7 +49,7 @@ contract ERC777SnapshotWrapper is ERC777 {
         backingToken.safeTransfer(_recipient, _amount);
     }
 
-    function snapshot() public returns (uint256) {
+    function snapshot() external returns (uint256) {
         uint256 currentId = ++currentSnapshotId;
         emit Snapshot(currentId);
         return currentId;

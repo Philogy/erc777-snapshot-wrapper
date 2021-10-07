@@ -17,8 +17,8 @@ library Snapshots {
         uint256 _snapshotId,
         uint256 _currentSnapshotId
     ) internal view returns (bool, uint256) {
-        require(_snapshotId > 0, "Snapshots: id is 0");
-        require(_snapshotId <= _currentSnapshotId, "Snapshots: nonexistent id");
+        require(_snapshotId > 0, "Snapshots: Id is 0");
+        require(_snapshotId <= _currentSnapshotId, "Snapshots: Nonexistent id");
 
         uint256 index = _snapshots.ids.findUpperBound(_snapshotId);
 
